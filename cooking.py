@@ -16,8 +16,8 @@ def priorities(db):
 	names = [(p["_id"], p["username"]) for p in db.people.find()]
 	
 	priorities = [(name, times_eaten_since_cooked(db, pid)) for pid, name in names]
-
-	return sorted(priorities, key=lambda p: p[1])
+	
+	return sorted(priorities, key=lambda p: p[1], reverse=True)
 
 def insert(db, chef, eaters):
 	db.cooked.insert(
