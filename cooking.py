@@ -1,6 +1,5 @@
 import pymongo
 import datetime
-import functools
 
 def last_cooked(db, pid):
 	cookings = db.cooked.find({"chef": pid}).sort("time", pymongo.DESCENDING).limit(1)
