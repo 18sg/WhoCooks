@@ -30,5 +30,5 @@ def username_to_id(db, uname):
 
 if __name__ == "__main__":
 	db = pymongo.Connection()
-	print priorities(db.test)
+	print priorities(db["18sg"])
 
