@@ -31,6 +31,9 @@ def username_to_id(db, uname):
 def id_to_username(db, pid):
 	return db.people.find_one({"_id": pid})["username"]
 
+def connect():
+	return pymongo.Connection()["18sg"]
+
 if __name__ == "__main__":
 	db = pymongo.Connection()
 	print priorities(db["18sg"])
