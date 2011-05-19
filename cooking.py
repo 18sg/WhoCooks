@@ -13,20 +13,23 @@ def times_eaten_since_cooked(db, pid):
 		return db.cooked.find({"eaters": pid}).count()
 
 def priorities(db):
-	names = [p["username"] for p in db.people.find()]
+	names = [(p["_id"], p["username"]) for p in db.people.find()]
 	
-	priorities = [(p, times_eaten_since_cooked(db, p)) for p in names]
+	priorities = [(name, times_eaten_since_cooked(db, pid)) for pid, name in names]
 
 	return sorted(priorities, key=lambda p: p[1])
 
 def insert(db, chef, eaters):
 	db.cooked.insert(
 		{"chef": username_to_id(db, chef),
-		 "eaters": [username_to_id(db, e) for i in eaters],
+		 "eaters": [username_to_id(db, e) for e in eaters],
 		 "time": datetime.datetime.now()})
 
 def username_to_id(db, uname):
-	return db.cooked.find_one({"username": uname})["_id"]
+	return db.people.find_one({"username": uname})["_id"]
+
+def id_to_username(db, pid):
+	return db.people.find_one({"_id": pid})["username"]
 
 if __name__ == "__main__":
 	db = pymongo.Connection()
