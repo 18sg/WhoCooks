@@ -1,4 +1,5 @@
 import pymongo
+from bson.objectid import ObjectId
 import datetime
 
 def last_cooked(db, pid):
@@ -24,6 +25,17 @@ def insert(db, chef, eaters):
 		{"chef": username_to_id(db, chef),
 		 "eaters": [username_to_id(db, e) for e in eaters],
 		 "time": datetime.datetime.now()})
+
+def recent(db, n=10):
+	return [(id_to_username(db, r["chef"]),
+	         [id_to_username(db, e) for e in r["eaters"]],
+	         str(r["time"]),
+	         str(r["_id"]))
+	        for r in db.cooked.find().sort("time", pymongo.DESCENDING).limit(n)]
+
+def remove(db, oid):
+	assert oid is not None # Would remove the entire collection :s
+	db.cooked.remove(ObjectId(oid))
 
 def username_to_id(db, uname):
 	return db.people.find_one({"username": uname})["_id"]
