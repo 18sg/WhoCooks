@@ -35,6 +35,5 @@ def connect():
 	return pymongo.Connection()["18sg"]
 
 if __name__ == "__main__":
-	db = pymongo.Connection()
-	print priorities(db["18sg"])
+	print priorities(connect())
 
